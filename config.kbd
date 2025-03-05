@@ -33,13 +33,6 @@
   )
 )
 
-(deftemplate fork-ctrl (normal modded)
-  (switch
-    (lctrl) $modded break
-    () $normal break
-  )
-)
-
 (deflayermap (base)
  caps esc
  ' S-'
@@ -53,8 +46,8 @@
  ;;k (tap-hold $tap-time $hold-time k lalt)
  
  ;; Allows j and k to be used as up/down keys when ctrl is held
- j (template-expand fork-ctrl (tap-hold $tap-time $hold-time j lsft) down)
- k (template-expand fork-ctrl (tap-hold $tap-time $hold-time k lalt) up)
+ j (fork (tap-hold $tap-time $hold-time j lsft) (unmod down) (lctrl))
+ k (fork (tap-hold $tap-time $hold-time k lalt) (unmod up) (lctrl))
  l (tap-hold $tap-time $hold-time l lctrl)
  ; (tap-hold $tap-time $hold-time ; lmet)
 
