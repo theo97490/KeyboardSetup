@@ -1,76 +1,83 @@
-;; Kanata kbd config
-;; defsrc is still necessary
-(defcfg
-  process-unmapped-keys yes
-  override-release-on-activation yes
-  windows-altgr add-lctl-release
-)
+" .ideavimrc is a configuration file for IdeaVim plugin. It uses
+"   the same commands as the original .vimrc configuration.
+" You can find a list of commands here: https://jb.gg/h38q75
+" Find more examples here: https://jb.gg/share-ideavimrc
 
-(defvar
-  tap-time 200
-  hold-time 175
-)
+" Good stuff : https://www.cyberwizard.io/posts/the-ultimate-ideavim-setup/
 
-(deflocalkeys-win
-  a 81
-  ; 77
-  ' 192
-  rparen 219
-)
+set relativenumber
+set number
 
-(deflocalkeys-linux
-  rparen 12
-)
+"" -- Suggested options --
+" Show a few lines of context around the cursor. Note that this makes the
+" text scroll if you mouse-click near the start or end of the window.an-i-make-vim-paste-from-and-copy-to-the-systems-clipboard
+set scrolloff=5
+set smartcase
 
-(defsrc)
+" Do incremental searching.
+set surround
+set incsearch
+set hlsearch
+set nerdtree
+set which-key
 
-;; Normal key put, shift only output, additionals/other mods output
-(deftemplate fork-shift-modded (normal shifted modded)
-  (switch
-    (lalt ralt lmet lctrl) $modded break
-    (lsft) $shifted break
-    () $normal break
-  )
-)
+" Don't use Ex mode, use Q for formatting.
+map Q gq
 
-(deflayermap (base)
- caps esc
- ' S-'
+let mapleader = " "
 
- a (tap-hold $tap-time $hold-time a lmet)
- s (tap-hold $tap-time $hold-time s lctrl)
- d (tap-hold $tap-time $hold-time d lalt)
- f (tap-hold $tap-time $hold-time f lsft)
+" Yank 
+set clipboard+=unnamed
 
- ;;j (tap-hold $tap-time $hold-time j lsft)
- ;;k (tap-hold $tap-time $hold-time k lalt)
- 
- ;; Allows j and k to be used as up/down keys when ctrl is held
- j (fork (tap-hold $tap-time $hold-time j lsft) (unmod down) (lctrl))
- k (fork (tap-hold $tap-time $hold-time k lalt) (unmod up) (lctrl))
- l (tap-hold $tap-time $hold-time l lctrl)
- ; (tap-hold $tap-time $hold-time ; lmet)
+" Move tabs
+nnoremap <TAB> :tabnext<CR>
+nnoremap <S-TAB> :tabprev<CR>\
 
- 1 (template-expand fork-shift-modded S-1 (unshift 1) 1)
- 2 (template-expand fork-shift-modded S-2 (unshift 2) 2)
- 3 (template-expand fork-shift-modded S-3 (unshift 3) 3)
- 4 (template-expand fork-shift-modded S-4 (unshift 4) 4)
- 5 (template-expand fork-shift-modded S-5 (unshift 5) 5)
- 6 (template-expand fork-shift-modded S-6 (unshift 6) 6)
- 7 (template-expand fork-shift-modded S-7 (unshift 7) 7)
- 8 (template-expand fork-shift-modded S-8 (unshift 8) 8)
- 9 (template-expand fork-shift-modded S-9 (unshift 9) 9)
- 0 (template-expand fork-shift-modded S-0 (unshift 0) 0)
- rparen (template-expand fork-shift-modded rparen (unshift rparen) rparen)
- 
- rctrl lctrl
- rsft lsft
- rmet lmet
+" Move between panes
+nnoremap <C-h> <C-w>h
+nnoremap <C-l> <C-w>l
+nnoremap <A-h> <C-w>h
+nnoremap <A-l> <C-w>l
+nnoremap <A-k> <C-w>k
+nnoremap <A-j> <C-w>j
 
- f12 (layer-switch disabled)
-)
+" Actions
+set notimeout
 
-(deflayermap (disabled)
-  f12 (layer-switch base)
-)
+"" Leader
+map <Leader><Leader> <Action>(GotoFile)
+map <leader>c <action>(CommentByLineComment)
+map <leader>lf <action>(ReformatCode)
+map <leader>a <action>(ShowIntentionActions)
+map <leader>x <action>(CloseContent)
+map <leader>wp <action>(PinActiveTab)
+map <leader>bc <action>(CloseAllEditorsButActive)
 
+"" LSP
+nmap <C-Space> <action>(ShowIntentionActions)
+nmap gd <Action>(GotoDeclaration)
+nmap gS <Action>(GotoSymbol)
+nmap gs <Action>(FileStructurePopup)
+nmap gy <Action>(GotoTypeDeclaration)
+nmap gi <Action>(GotoImplementation)
+nmap gu <Action>(ShowUsages)
+nmap gt <Action>(GotoTest)
+nmap gf <Action>(Back)
+nmap gb <Action>(Forward)
+
+" --- Enable IdeaVim plugins https://jb.gg/ideavim-plugins
+" Highlight copied text
+Plug 'machakann/vim-highlightedyank'
+" Commentary plugin
+Plug 'tpope/vim-commentary'
+
+
+"" -- Map IDE actions to IdeaVim -- https://jb.gg/abva4t
+"" Map \r to the Reformat Code action
+"map \r <Action>(ReformatCode)
+
+"" Map <leader>d to start debug
+"map <leader>d <Action>(Debug)
+
+"" Map \b to toggle the breakpoint on the current line
+"map \b <Action>(ToggleLineBreakpoint)
