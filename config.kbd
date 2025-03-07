@@ -49,7 +49,7 @@
  s (tap-hold $tap-time $hold-time s lctrl)
  d (tap-hold $tap-time $hold-time d lalt)
  f (tap-hold $tap-time $hold-time f lsft)
-
+ 
  ;;j (tap-hold $tap-time $hold-time j lsft)
  ;;k (tap-hold $tap-time $hold-time k lalt)
  
